@@ -40,3 +40,7 @@ async function startServer() {
 }
 
 startServer()
+
+app.get("/", (req, res) => {
+    res.send("The server is running 🔊.")
+})
