@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const uri = process.env.MONGO_URI
 const express = require("express")
@@ -43,4 +43,28 @@ app.get("/", (req, res) => {
 app.get("/posts", async (req, res) => {
     const posts = await db.collection("posts").find().toArray()
     res.json(posts)
+})
+
+app.post("/posts", async (req, res) => {
+    const newPost = {
+        body: req.body.body,
+        author: req.body.author,
+        timecreated: Date.now()
+    }
+
+    const insertResult = await db.collection("posts").insertOne(newPost)
+
+    res.status(201).json({
+        _id: insertResult.insertedId,
+        body: newPost.body,
+        author: newPost.author,
+        timecreated: newPost.timecreated
+    })
+})
+
+app.delete("/posts/:id", async (req, res) => {
+  await db.collection("posts").deleteOne({
+    _id: new ObjectId(req.params.id)
+  })
+  res.end()
 })
