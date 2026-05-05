@@ -63,8 +63,8 @@ app.post("/posts", async (req, res) => {
 })
 
 app.delete("/posts/:id", async (req, res) => {
-  await db.collection("posts").deleteOne({
-    _id: new ObjectId(req.params.id)
-  })
-  res.end()
+    await db.collection("posts").deleteOne({
+        _id: new ObjectId(req.params.id)
+    })
+    res.end()
 })
